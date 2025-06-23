@@ -152,7 +152,6 @@ document.getElementById("addBtn").addEventListener("click", async () => {
   await addTask({ text, tag, color, dueDate, order });
 
   const newTasks = await getTasks();
-  console.log(newTasks, "theese: ");
   renderTasks(newTasks);
 
   document.getElementById("taskInput").value = "";
