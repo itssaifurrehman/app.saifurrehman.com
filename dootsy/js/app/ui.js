@@ -4,24 +4,36 @@ const taskList = document.getElementById("taskList");
 
 function createTaskElement(task) {
   const li = document.createElement("li");
-  li.className = "flex justify-between items-center p-2 border-b";
   li.dataset.id = task.id;
 
+  li.className = `
+  flex items-center justify-between px-4 py-3 border-b border-gray-300 dark:border-gray-600
+  bg-white dark:bg-gray-800 rounded transition-all duration-200
+`;
+
   const checkedClass = task.completed ? "line-through text-gray-400" : "";
-  const editDisabled = task.completed
-    ? "disabled opacity-50 cursor-not-allowed"
-    : "";
+  const editDisabled = task.completed ? "opacity-50 cursor-not-allowed" : "";
 
   li.innerHTML = `
-    <div class="flex items-center gap-2">
-      <input type="checkbox" class="task-check" ${
+    <div class="flex items-center gap-3">
+      <input type="checkbox" class="task-check h-5 w-5 accent-blue-500" ${
         task.completed ? "checked" : ""
       }>
-      <span class="task-text ${checkedClass}">${task.text}</span>
+      <span class="task-text text-lg ${checkedClass}">${task.text}</span>
     </div>
+
     <div class="flex gap-2">
-      <button class="edit-btn text-blue-500 ${editDisabled}">Edit</button>
-      <button class="delete-btn text-red-500">Delete</button>
+      <button 
+        class="edit-btn px-3 py-1 text-sm text-white bg-blue-500 hover:bg-blue-600 rounded ${editDisabled}"
+        ${task.completed ? "disabled" : ""}
+      >
+        Edit
+      </button>
+      <button 
+        class="delete-btn px-3 py-1 text-sm text-white bg-red-500 hover:bg-red-600 rounded"
+      >
+        Delete
+      </button>
     </div>
   `;
 
