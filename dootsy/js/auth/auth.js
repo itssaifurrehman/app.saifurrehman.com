@@ -34,6 +34,7 @@ async function handleRedirectLogin(callback) {
   }
 }
 
+
 function logout() {
   return signOut(auth);
 }

@@ -1,9 +1,4 @@
-import {
-  login,
-  logout,
-  onAuthChange,
-  handleRedirectLogin,
-} from "../auth/auth.js";
+import { login, logout, onAuthChange, handleRedirectLogin } from '../auth/auth.js';
 import { setUser, getTasks } from "./todo.js";
 import {
   renderTasks,
@@ -19,7 +14,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 const plannerApp = document.getElementById("plannerApp");
 const authSection = document.getElementById("authSection");
 
-// Unified logic to show planner UI
+// Unified UI logic
 async function showAppUI(user) {
   setUser(user.uid);
   authSection.classList.add("hidden");
@@ -30,19 +25,18 @@ async function showAppUI(user) {
   updateEmptyState();
 }
 
-// Handle login button click
+// Handle login button
 loginBtn.addEventListener("click", login);
 logoutBtn.addEventListener("click", logout);
 
-// Handle redirect login (mobile)
-handleRedirectLogin(async (user) => {
+// ✅ FIRST: handle redirect login (mobile)
+await handleRedirectLogin(async (user) => {
   if (user) {
-    console.log("Logged in via redirect:", user.displayName);
     await showAppUI(user);
   }
 });
 
-// Handle auth state changes (desktop login, auto-login)
+// ✅ THEN: listen for auth state changes
 onAuthChange(async (user) => {
   if (user) {
     await showAppUI(user);
@@ -52,7 +46,7 @@ onAuthChange(async (user) => {
   }
 });
 
-// Setup features
+// Setup UI/UX features
 setupThemeToggle();
 bindTaskEvents();
 setupSortable();
