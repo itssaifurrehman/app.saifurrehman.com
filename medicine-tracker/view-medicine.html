@@ -1,0 +1,36 @@
+<section id="historySection">
+  
+<div class="flex justify-end gap-4 mb-4 px-4">
+  <select id="sortName" class="px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+    <option value="">Sort by Name</option>
+    <option value="asc" selected>A-Z</option>
+    <option value="desc">Z-A</option>
+  </select>
+
+  <select id="sortFrequency" class="px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+    <option value="">Sort by Times a Day</option>
+    <option value="asc">Low to High</option>
+    <option value="desc">High to Low</option>
+  </select>
+
+  <select id="sortDosesLeft" class="px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+    <option value="">Sort by Doses Left</option>
+    <option value="asc">Low to High</option>
+    <option value="desc">High to Low</option>
+  </select>
+</div>
+  <h2 class="text-xl font-semibold mb-4">Your Medicines</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white shadow rounded-lg">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Name</th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Duration</th>
+          <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">Frequency</th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Schedule</th>
+        </tr>
+      </thead>
+      <tbody id="medicineList"></tbody>
+    </table>
+  </div>
+</section>

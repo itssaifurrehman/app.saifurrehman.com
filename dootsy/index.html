@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Planner</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+  <div class="min-h-screen flex flex-col items-center p-6">
+    <div class="w-full max-w-xl">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">📅 Daily Planner</h1>
+        <!-- <button id="themeToggle" class="bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded">
+          Toggle Theme
+        </button> -->
+      </div>
+
+      <div id="authSection" class="mb-4">
+        <button id="loginBtn" class="bg-green-500 text-white px-4 py-2 rounded">Login with Google</button>
+        <button id="logoutBtn" class="hidden bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+      </div>
+
+      <div id="plannerApp" class="hidden">
+        <div class="flex mb-4 gap-2">
+          <input id="taskInput" type="text" placeholder="Add new task..." class="flex-1 p-2 border rounded dark:bg-gray-800" />
+          <button id="addBtn" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+        </div>
+
+        <ul id="taskList" class="space-y-2">
+          <!-- Tasks go here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore-compat.js"></script>
+
+  <!-- App scripts -->
+  <script type="module" src="./js/app/script.js"></script>
+</body>
+</html>
