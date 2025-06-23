@@ -1,0 +1,20 @@
+# Serve index.html as default file
+DirectoryIndex index.html
+
+# Disable directory listing for security
+Options -Indexes
+
+# Set proper MIME types and encoding
+AddDefaultCharset UTF-8
+
+# Basic security headers (optional, but good practice)
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Redirect www to non-www (optional for subdomain clarity)
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.app\.saifurrehman\.com$ [NC]
+RewriteRule ^(.*)$ https://app.saifurrehman.com/$1 [L,R=301]
