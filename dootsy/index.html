@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daily Planner</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
   <div class="min-h-screen flex flex-col items-center p-6">
@@ -21,16 +21,62 @@
         <button id="loginBtn" class="bg-green-500 text-white px-4 py-2 rounded">Login with Google</button>
         <button id="logoutBtn" class="hidden bg-red-500 text-white px-4 py-2 rounded">Logout</button>
       </div>
+      <div class="mb-4">
+        <label for="tagFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by Tag:</label>
+        <select id="tagFilter" class="ml-2 p-2 border rounded dark:bg-gray-800">
+          <option value="">All</option>
+          <option value="Work">Work</option>
+          <option value="Personal">Personal</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Miscellaneous">Miscellaneous</option>
 
+        </select>
+      </div>
       <div id="plannerApp" class="hidden">
-        <div class="flex mb-4 gap-2">
-          <input id="taskInput" type="text" placeholder="Add new task..." class="flex-1 p-2 border rounded dark:bg-gray-800" />
-          <button id="addBtn" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+        <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-end">
+          <input id="taskInput" type="text" placeholder="Add new task..."
+            class="flex-1 p-2 border rounded dark:bg-gray-800" />
+
+          <div class="flex gap-2">
+            <select id="taskTag" class="p-2 border rounded dark:bg-gray-800">
+              <option value="">Tag</option>
+              <option value="Work">Work</option>
+              <option value="Personal">Personal</option>
+              <option value="Urgent">Urgent</option>
+              <option value="Miscellaneous">Miscellaneous</option>
+            </select>
+
+            <select id="taskColor" class="p-2 border rounded dark:bg-gray-800">
+              <option value="">Color</option>
+              <option value="Red">Red</option>
+              <option value="Yellow">Yellow</option>
+              <option value="Green">Green</option>
+              <option value="Blue">Blue</option>
+            </select>
+
+            <input type="date" id="taskDueDate" class="p-2 border rounded dark:bg-gray-800" />
+          </div>
+
+          <button id="addBtn" class="bg-blue-500 text-white px-4 py-2 rounded self-start">Add</button>
         </div>
 
-        <ul id="taskList" class="space-y-2">
-          <!-- Tasks go here -->
-        </ul>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div>
+            <h2 class="text-lg font-semibold mb-2 dark:text-white">🆕 Active Tasks</h2>
+            <ul id="incompleteTasks" class="space-y-2 transition-all"></ul>
+            <p id="noActiveMessage" class="text-gray-500 dark:text-gray-400 mt-2 hidden">
+              💤 No tasks yet. Add one to get started!
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-lg font-semibold mb-2 dark:text-white">✅ Completed Tasks</h2>
+            <ul id="completedTasks" class="space-y-2 transition-all"></ul>
+            <p id="noCompletedMessage" class="text-gray-500 dark:text-gray-400 mt-2 hidden">
+              ✅ No completed tasks yet.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
