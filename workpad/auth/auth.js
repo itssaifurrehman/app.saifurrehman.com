@@ -2,7 +2,7 @@ import { auth, provider } from "../config/config.js";
 import {
   signInWithPopup,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
 const loginBtn = document.getElementById("loginBtn");
@@ -19,7 +19,6 @@ const onUserChange = (callback) => {
   onAuthStateChanged(auth, (u) => {
     user = u;
 
-    // Update UI based on auth state
     if (user) {
       loginBtn.classList.add("hidden");
       logoutBtn.classList.remove("hidden");
@@ -35,7 +34,7 @@ const onUserChange = (callback) => {
       userNameSpan.classList.add("hidden");
     }
 
-    callback(user); // Notify app
+    callback(user);
   });
 };
 

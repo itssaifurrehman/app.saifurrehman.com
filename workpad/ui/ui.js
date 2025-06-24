@@ -23,7 +23,6 @@ const renderNotes = (notes, onDelete, onEdit, editingId = null) => {
       isBeingEdited ? "ring-2 ring-blue-400 bg-blue-50" : ""
     }`;
 
-    // Card content
     div.innerHTML = `
       <h3 class="text-lg font-semibold mb-1">${note.title}</h3>
      <div class="note-preview prose max-w-none text-gray-700 line-clamp-3 mb-2">
@@ -60,7 +59,6 @@ const renderNotes = (notes, onDelete, onEdit, editingId = null) => {
       }
     `;
 
-    // Attach handlers after innerHTML is inserted
     const viewBtn = div.querySelector('[data-action="view"]');
     const editBtn = div.querySelector('[data-action="edit"]');
     const deleteBtn = div.querySelector('[data-action="delete"]');
@@ -85,7 +83,6 @@ const clearNoteForm = (quill) => {
   }
 };
 
-// Show modal
 function openNoteModal(note) {
   modalNoteTitle.textContent = note.title || "Untitled";
   modalNoteContent.innerHTML = note.body || "<em>No content</em>";
@@ -94,7 +91,6 @@ function openNoteModal(note) {
   viewNoteModal.classList.add("flex");
 }
 
-// Close modal
 function closeNoteModal() {
   viewNoteModal.classList.add("hidden");
   viewNoteModal.classList.remove("flex");

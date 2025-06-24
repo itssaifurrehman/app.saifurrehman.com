@@ -1,4 +1,3 @@
-// app.js
 import { login, logout, onUserChange, getUser } from "./auth/auth.js";
 import {
   addNote,
@@ -23,7 +22,6 @@ window.onload = () => {
 
   const WORD_LIMIT = 5000;
 
-  // ✅ Initialize Quill
   quill = new Quill("#editor", {
     theme: "snow",
     modules: {
@@ -38,17 +36,14 @@ window.onload = () => {
     },
   });
 
-  // Handle undo
   document.querySelector(".ql-undo").addEventListener("click", () => {
     quill.history.undo();
   });
 
-  // Handle redo
   document.querySelector(".ql-redo").addEventListener("click", () => {
     quill.history.redo();
   });
 
-  // ✅ Word count + limit
   quill.on("text-change", (delta, oldDelta, source) => {
     const plainText = quill.getText().trim();
     const words = plainText ? plainText.split(/\s+/).length : 0;
@@ -76,7 +71,6 @@ window.onload = () => {
     }
   });
 
-  // ✅ Limit copy-paste
   setTimeout(() => {
     if (quill?.root) {
       quill.root.addEventListener("paste", (e) => {
@@ -101,12 +95,11 @@ window.onload = () => {
     }
   }, 100);
 
-  // ✅ Save note (mock)
   saveBtn.addEventListener("click", () => {
     const htmlContent = quill.root.innerHTML;
   });
 
-  window.quill = quill; // Optional global
+  window.quill = quill;
 };
 
 document.getElementById("saveNote").onclick = async () => {
@@ -162,7 +155,6 @@ function handleEdit(note) {
   document.getElementById("saveNote").textContent = "Update Note";
   currentEditId = note.id;
 
-  // Rerender to disable buttons for this note
   getUserNotes(getUser().uid).then((notes) => {
     renderNotes(notes, handleDelete, handleEdit, currentEditId);
   });
