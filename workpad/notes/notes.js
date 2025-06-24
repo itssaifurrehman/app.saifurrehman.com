@@ -9,7 +9,7 @@ import {
   updateDoc,
   query,
   where,
-  orderBy
+  orderBy,
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 const NOTES_COLLECTION = "notes";
@@ -19,12 +19,9 @@ const addNote = async (note) => {
 };
 
 const getUserNotes = async (uid) => {
-  const q = query(
-  collection(db, "notes"),
-  where("uid", "==", uid)
-  );
+  const q = query(collection(db, "notes"), where("uid", "==", uid));
   const snap = await getDocs(q);
-  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 const deleteNote = async (id) => {

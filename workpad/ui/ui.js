@@ -16,6 +16,7 @@ const renderNotes = (notes, onDelete, onEdit, editingId = null) => {
 
   notes.forEach((note) => {
     const isBeingEdited = note.id === editingId;
+    const formattedDate = new Date(note.updatedAt).toLocaleString();
 
     const div = document.createElement("div");
     div.className = `bg-white p-4 rounded shadow relative ${
@@ -28,7 +29,7 @@ const renderNotes = (notes, onDelete, onEdit, editingId = null) => {
      <div class="note-preview prose max-w-none text-gray-700 line-clamp-3 mb-2">
   ${note.body}
 </div>
-
+<p class="text-xs text-gray-500 mt-1">🕒 Last edited: ${formattedDate}</p>
 
       <div class="flex gap-3 flex-wrap items-center mt-2">
         <button class="text-sm text-blue-600 " data-id="${

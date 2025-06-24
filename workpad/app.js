@@ -24,7 +24,7 @@ window.onload = () => {
   const WORD_LIMIT = 5000;
 
   // ✅ Initialize Quill
-  const quill = new Quill("#editor", {
+  quill = new Quill("#editor", {
     theme: "snow",
     modules: {
       toolbar: {
@@ -119,8 +119,10 @@ document.getElementById("saveNote").onclick = async () => {
   if (!title || !body || body === "<p><br></p>")
     return alert("Please fill in the title and note content");
 
+  const updatedAt = new Date().toISOString();
+
   if (currentEditId) {
-    await updateNote(currentEditId, { title, body });
+    await updateNote(currentEditId, { title, body, updatedAt });
     currentEditId = null;
     document.getElementById("saveNote").textContent = "Save Note";
   } else {
@@ -128,7 +130,7 @@ document.getElementById("saveNote").onclick = async () => {
       uid: user.uid,
       title,
       body,
-      createdAt: Date.now(),
+      updatedAt,
     });
   }
 
