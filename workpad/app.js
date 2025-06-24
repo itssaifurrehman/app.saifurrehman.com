@@ -9,8 +9,6 @@ import {
 
 import { renderNotes, clearNoteForm } from "./ui/ui.js";
 
-
-
 document.getElementById("loginBtn").onclick = login;
 document.getElementById("logoutBtn").onclick = logout;
 
@@ -26,11 +24,28 @@ window.onload = () => {
   const WORD_LIMIT = 5000;
 
   // ✅ Initialize Quill
-  quill = new Quill("#editor", {
+  const quill = new Quill("#editor", {
     theme: "snow",
     modules: {
-      toolbar: "#toolbar"
-    }
+      toolbar: {
+        container: "#toolbar",
+      },
+      history: {
+        delay: 1000,
+        maxStack: 100,
+        userOnly: true,
+      },
+    },
+  });
+
+  // Handle undo
+  document.querySelector(".ql-undo").addEventListener("click", () => {
+    quill.history.undo();
+  });
+
+  // Handle redo
+  document.querySelector(".ql-redo").addEventListener("click", () => {
+    quill.history.redo();
   });
 
   // ✅ Word count + limit
@@ -65,7 +80,9 @@ window.onload = () => {
   setTimeout(() => {
     if (quill?.root) {
       quill.root.addEventListener("paste", (e) => {
-        const pastedText = (e.clipboardData || window.clipboardData).getData("text");
+        const pastedText = (e.clipboardData || window.clipboardData).getData(
+          "text"
+        );
         const currentText = quill.getText().trim();
         const currentWords = currentText ? currentText.split(/\s+/).length : 0;
         const pastedWords = pastedText.trim().split(/\s+/).length;
@@ -73,7 +90,11 @@ window.onload = () => {
         if (currentWords + pastedWords > WORD_LIMIT) {
           e.preventDefault();
           const allowedWords = WORD_LIMIT - currentWords;
-          const limitedText = pastedText.trim().split(/\s+/).slice(0, allowedWords).join(" ");
+          const limitedText = pastedText
+            .trim()
+            .split(/\s+/)
+            .slice(0, allowedWords)
+            .join(" ");
           quill.insertText(quill.getSelection().index, limitedText);
         }
       });
@@ -88,9 +109,6 @@ window.onload = () => {
   window.quill = quill; // Optional global
 };
 
-
-
-
 document.getElementById("saveNote").onclick = async () => {
   const user = getUser();
   if (!user) return alert("Login first");
@@ -101,11 +119,11 @@ document.getElementById("saveNote").onclick = async () => {
   if (!title || !body || body === "<p><br></p>")
     return alert("Please fill in the title and note content");
 
- if (currentEditId) {
-  await updateNote(currentEditId, { title, body });
-  currentEditId = null;
-  document.getElementById("saveNote").textContent = "Save Note";
-} else {
+  if (currentEditId) {
+    await updateNote(currentEditId, { title, body });
+    currentEditId = null;
+    document.getElementById("saveNote").textContent = "Save Note";
+  } else {
     await addNote({
       uid: user.uid,
       title,
@@ -114,9 +132,9 @@ document.getElementById("saveNote").onclick = async () => {
     });
   }
 
-clearNoteForm(quill);
-const notes = await getUserNotes(user.uid);
-renderNotes(notes, handleDelete, handleEdit);
+  clearNoteForm(quill);
+  const notes = await getUserNotes(user.uid);
+  renderNotes(notes, handleDelete, handleEdit);
 };
 
 async function handleDelete(id) {
@@ -131,7 +149,8 @@ onUserChange(async (user) => {
     const notes = await getUserNotes(user.uid);
     renderNotes(notes, handleDelete, handleEdit);
   } else {
-    document.getElementById("notesList").innerHTML = "<p class='text-gray-600'>Please login to view your notes.</p>";
+    document.getElementById("notesList").innerHTML =
+      "<p class='text-gray-600'>Please login to view your notes.</p>";
   }
 });
 
