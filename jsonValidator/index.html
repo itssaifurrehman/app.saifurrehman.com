@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON Formatter & Validator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen p-6">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4 text-center">🧰 JSON Formatter & Validator</h1>
+
+    <!-- JSON Input Section -->
+    <div class="flex bg-white rounded-xl shadow overflow-hidden border border-gray-300">
+      <!-- Line Numbers -->
+      <div id="lineNumbers" class="bg-gray-100 text-gray-500 text-right p-4 font-mono text-sm select-none leading-5 overflow-hidden whitespace-nowrap">
+        1
+      </div>
+      <!-- Textarea -->
+      <textarea id="jsonInput" rows="15" placeholder="Paste your JSON here..."
+        class="w-full p-4 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 leading-5"
+        style="line-height: 1.25rem; min-height: 300px;"></textarea>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex flex-wrap gap-3 mt-4 justify-center">
+      <button id="formatBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Format JSON</button>
+      <button id="validateBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Validate JSON</button>
+      <button id="copyBtn" class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800">Copy</button>
+      <button id="downloadBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">Download</button>
+    </div>
+
+    <!-- Message -->
+    <div id="message" class="mt-4 text-center text-sm font-medium"></div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    const input = document.getElementById("jsonInput");
+    const formatBtn = document.getElementById("formatBtn");
+    const validateBtn = document.getElementById("validateBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const message = document.getElementById("message");
+    const lineNumbers = document.getElementById("lineNumbers");
+
+    // Show success or error messages
+    function showMessage(msg, type = "success") {
+      message.textContent = msg;
+      message.className = `mt-4 text-center text-sm font-semibold ${
+        type === "success" ? "text-green-600" : "text-red-600"
+      }`;
+    }
+
+    // Format JSON
+    formatBtn.addEventListener("click", () => {
+      try {
+        const parsed = JSON.parse(input.value);
+        input.value = JSON.stringify(parsed, null, 2);
+        showMessage("JSON formatted successfully ✅");
+        updateLineNumbers();
+      } catch (err) {
+        showMessage("Invalid JSON: " + err.message, "error");
+      }
+    });
+
+    // Validate JSON
+    validateBtn.addEventListener("click", () => {
+      try {
+        JSON.parse(input.value);
+        showMessage("Valid JSON ✅");
+      } catch (err) {
+        showMessage("Invalid JSON: " + err.message, "error");
+      }
+    });
+
+    // Copy JSON
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(input.value);
+        showMessage("Copied to clipboard 📋");
+      } catch {
+        showMessage("Failed to copy", "error");
+      }
+    });
+
+    // Download JSON
+    downloadBtn.addEventListener("click", () => {
+      try {
+        const blob = new Blob([input.value], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "formatted.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        showMessage("Download started 📥");
+      } catch {
+        showMessage("Failed to download", "error");
+      }
+    });
+
+    // Update line numbers based on line count
+    function updateLineNumbers() {
+      const lines = input.value.split("\n").length;
+      lineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join("<br>");
+    }
+
+    // Sync line numbers with text input
+    input.addEventListener("input", updateLineNumbers);
+    input.addEventListener("scroll", () => {
+      lineNumbers.scrollTop = input.scrollTop;
+    });
+
+    // Initialize on load
+    updateLineNumbers();
+  </script>
+</body>
+</html>
