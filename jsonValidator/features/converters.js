@@ -79,8 +79,9 @@ export function initConverters(state) {
   jsonBtn.addEventListener("click", () => {
     try {
       const { data, format } = parseInputValue();
+      console.log("Converting to JSON from:", format);
 
-      if (format === "xml") {
+      if (format === "xml" || format === "yaml") {
         showMessage("⚠️ Converting from XML may produce incomplete JSON", "warning");
       }
 
@@ -99,6 +100,7 @@ export function initConverters(state) {
   yamlBtn.addEventListener("click", () => {
     try {
       const { data, format } = parseInputValue();
+      console.log("Converting to YAML from:", format);
 
       if (format === "xml") {
         showMessage("⚠️ XML-derived JSON may not be valid YAML", "warning");
@@ -118,7 +120,9 @@ export function initConverters(state) {
 
   xmlBtn.addEventListener("click", () => {
     try {
-      const { data } = parseInputValue();
+      const { data, format } = parseInputValue();
+            console.log("Converting to JSXML from:", format);
+
 
       const wrapped = Array.isArray(data) ? { root: { item: data } } : data;
 

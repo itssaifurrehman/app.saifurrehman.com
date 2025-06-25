@@ -49,8 +49,8 @@ function updateStats() {
     const types = countTypes(parsed);
 
     statsBox.innerHTML = `
-      <div class="mb-1">📏 <strong>Lines:</strong> ${lines} | 🅰️ <strong>Characters:</strong> ${chars} | 🔑 <strong>Keys:</strong> ${keys}</div>
-      <div>📦 <strong>Objects:</strong> ${types.object}, 📚 <strong>Arrays:</strong> ${types.array}, 🔤 <strong>Strings:</strong> ${types.string}, 🔢 <strong>Numbers:</strong> ${types.number}, ✅ <strong>Booleans:</strong> ${types.boolean}, ❌ <strong>Nulls:</strong> ${types.null}</div>
+      <div class="mb-1">📏 <strong>Lines:</strong> ${lines} | 🅰️ <strong>Characters:</strong> ${chars} | 🔑 <strong>Keys:</strong> ${keys} | 
+      📦 <strong>Objects:</strong> ${types.object}  | 📚 <strong>Arrays:</strong> ${types.array} | 🔤 <strong>Strings:</strong> ${types.string} | 🔢 <strong>Numbers:</strong> ${types.number} | ✅ <strong>Booleans:</strong> ${types.boolean} | ❌ <strong>Nulls:</strong> ${types.null}</div>
     `;
   } catch {
     statsBox.innerHTML = `<span class="text-red-500">⚠️ Stats unavailable for invalid ${stateRef.format.toUpperCase()}</span>`;
