@@ -1,0 +1,7 @@
+# robots.txt for https://app.saifurrehman.com
+
+User-agent: *
+Disallow:
+
+# Sitemap location
+Sitemap: https://app.saifurrehman.com/sitemap.xml
