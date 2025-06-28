@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products - Pointly POS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <header class="bg-green-700 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-semibold">Products</h1>
+    <a href="dashboard.html" class="text-sm underline hover:text-gray-200">← Back to Dashboard</a>
+  </header>
+
+  <main class="p-4 space-y-6 max-w-3xl mx-auto">
+    <!-- Product Form -->
+    <div class="bg-white p-4 rounded-xl shadow-md">
+      <h2 class="text-lg font-semibold mb-4 text-gray-700">Add New Product</h2>
+      <form id="product-form" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <input required name="name" type="text" placeholder="Product Name" class="input" />
+        <input required name="unit" type="text" placeholder="Unit (e.g. bag, liter)" class="input" />
+        <input required name="category" type="text" placeholder="Category" class="input" />
+        <input required name="purchasePrice" type="number" placeholder="Purchase Price" class="input" />
+        <input required name="salePrice" type="number" placeholder="Sale Price" class="input" />
+        <input required name="quantity" type="number" placeholder="Opening Stock" class="input" />
+        <div class="sm:col-span-2">
+          <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg">Add Product</button>
+        </div>
+      </form>
+      <p id="product-success" class="text-green-600 text-sm mt-2 hidden">Product added successfully!</p>
+    </div>
+
+    <!-- Product List -->
+    <div class="bg-white p-4 rounded-xl shadow-md">
+      <h2 class="text-lg font-semibold mb-4 text-gray-700">Product Inventory</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-700">
+          <thead>
+            <tr class="border-b bg-gray-100">
+              <th class="p-2">Name</th>
+              <th class="p-2">Unit</th>
+              <th class="p-2">Category</th>
+              <th class="p-2">Purchase</th>
+              <th class="p-2">Sale</th>
+              <th class="p-2">Qty</th>
+              <th class="p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="product-table-body">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- External module -->
+  <script type="module" src="./app.js"></script>
+
+  <style>
+   
+  </style>
+</body>
+</html>
