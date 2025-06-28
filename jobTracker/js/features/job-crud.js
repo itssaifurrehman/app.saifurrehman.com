@@ -10,7 +10,6 @@ import {
   where,
   getDocs,
   serverTimestamp,
-  orderBy
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 /**
@@ -26,7 +25,7 @@ export async function addJob(data, userId) {
   const formattedToday = today.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
-    day: "numeric"
+    day: "numeric",
   });
 
   let followUpDate = "";
@@ -37,7 +36,7 @@ export async function addJob(data, userId) {
     followUpDate = followUp.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
-      day: "numeric"
+      day: "numeric",
     });
   }
 
@@ -46,7 +45,7 @@ export async function addJob(data, userId) {
     userId,
     applicationDate: data.applicationDate || formattedToday,
     followUpDate: data.followUpDate || followUpDate,
-    createdAt: serverTimestamp()
+    createdAt: serverTimestamp(),
   };
 
   return await addDoc(collection(db, "jobs"), job);
@@ -61,11 +60,9 @@ export async function getUserJobs(userId) {
   const snapshot = await getDocs(q);
 
   return snapshot.docs
-    .map(doc => ({ id: doc.id, ...doc.data() }))
-.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+    .map((doc) => ({ id: doc.id, ...doc.data() }))
+    .sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
 }
-
-
 
 /**
  * Updates an existing job entry

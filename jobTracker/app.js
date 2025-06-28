@@ -12,12 +12,21 @@ import { onUserLoggedIn, setupAuthHandlers } from "./js/auth/auth.js";
 const path = window.location.pathname;
 let jobs = null;
 
+// Auth handlers for login page
 if (path.endsWith("index.html")) {
   setupAuthHandlers();
 }
 
+// Dashboard logic
 if (path.endsWith("dashboard.html")) {
-  onUserLoggedIn(async (user) => {
+  onUserLoggedIn(async (user, role) => {
+    console.log("User logged in:", user, role);
+    // Admin should not access dashboard.html
+    if (role === "gbrsuperadmin") {
+      window.location.href = "admin-dashboard.html";
+      return;
+    }
+
     document.getElementById(
       "welcome-message"
     ).textContent = `Welcome, ${user.displayName}`;
@@ -26,7 +35,6 @@ if (path.endsWith("dashboard.html")) {
     const addRowBtn = document.getElementById("add-row");
 
     jobs = await getUserJobs(user.uid);
-
     tableBody.innerHTML = "";
 
     if (jobs.length > 0) {
@@ -48,7 +56,6 @@ if (path.endsWith("dashboard.html")) {
       updateRowNumbers();
       handleEmptyState();
       renderMonthlyApplications(jobs);
-
       updateAnalytics(jobs);
     });
   });
@@ -56,6 +63,10 @@ if (path.endsWith("dashboard.html")) {
   setupAuthHandlers();
 }
 
-document.getElementById("export-csv").addEventListener("click", () => {
-  exportJobsToCSV();
-});
+// Export CSV
+const exportBtn = document.getElementById("export-csv");
+if (exportBtn) {
+  exportBtn.addEventListener("click", () => {
+    exportJobsToCSV();
+  });
+}
