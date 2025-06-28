@@ -12,15 +12,12 @@ import { onUserLoggedIn, setupAuthHandlers } from "./js/auth/auth.js";
 const path = window.location.pathname;
 let jobs = null;
 
-// Auth handlers for login page
 if (path.endsWith("index.html")) {
   setupAuthHandlers();
 }
 
-// Dashboard logic
 if (path.endsWith("dashboard.html")) {
   onUserLoggedIn(async (user, role) => {
-    // Admin should not access dashboard.html
     if (role === "gbrsuperadmin") {
       window.location.href = "admin-dashboard.html";
       return;
@@ -62,7 +59,6 @@ if (path.endsWith("dashboard.html")) {
   setupAuthHandlers();
 }
 
-// Export CSV
 const exportBtn = document.getElementById("export-csv");
 if (exportBtn) {
   exportBtn.addEventListener("click", () => {

@@ -24,17 +24,15 @@ export function setupAuthHandlers() {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
 
-        let role = "user"; // default role
+        let role = "user";
 
         if (!userDocSnap.exists()) {
-          // 🔄 Automatically add new user to Firestore
           await setDoc(userDocRef, {
             email: user.email,
             name: user.displayName,
             role: "user",
             createdAt: new Date().toISOString()
           });
-          console.log("✅ New user added to Firestore");
         } else {
           const data = userDocSnap.data();
           role = data.role || "user";

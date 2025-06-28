@@ -19,7 +19,6 @@ import {
   renderMonthlyApplications,
 } from "./js/features/utils.js";
 
-// 🔒 Verify admin access
 onAuthStateChanged(auth, async user => {
   if (!user) {
     window.location.href = "index.html";
@@ -38,7 +37,6 @@ onAuthStateChanged(auth, async user => {
   await populateUserDropdown();
 });
 
-// 🔽 Load user list into dropdown
 async function populateUserDropdown() {
   const snapshot = await getDocs(collection(db, "users"));
   const dropdown = document.getElementById("user-select");
@@ -60,7 +58,6 @@ const name = data.name ? `${data.name} (${data.email})` : data.email;
   });
 }
 
-// 🧾 Fetch and render jobs for selected user
 async function loadJobsForUser(userId) {
   const jobs = await getJobsByUser(userId);
   const tableBody = document.getElementById("job-table-body");
@@ -77,7 +74,6 @@ async function loadJobsForUser(userId) {
   updateRowNumbers();
 }
 
-// 📁 Helper to get jobs by userId
 async function getJobsByUser(userId) {
   const jobSnapshot = await getDocs(
     query(collection(db, "jobs"), where("userId", "==", userId))
