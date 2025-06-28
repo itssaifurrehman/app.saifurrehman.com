@@ -20,7 +20,6 @@ if (path.endsWith("index.html")) {
 // Dashboard logic
 if (path.endsWith("dashboard.html")) {
   onUserLoggedIn(async (user, role) => {
-    console.log("User logged in:", user, role);
     // Admin should not access dashboard.html
     if (role === "gbrsuperadmin") {
       window.location.href = "admin-dashboard.html";
