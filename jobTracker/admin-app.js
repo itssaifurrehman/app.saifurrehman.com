@@ -34,7 +34,7 @@ onAuthStateChanged(auth, async user => {
     return;
   }
 
-  document.getElementById("welcome-message").textContent = `👑 Admin Dashboard`;
+  document.getElementById("welcome-message").textContent = `Admin Dashboard`;
 
   await populateUserDropdown();
 });
