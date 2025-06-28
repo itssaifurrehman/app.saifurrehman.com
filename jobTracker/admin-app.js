@@ -18,6 +18,8 @@ import {
   updateAnalytics,
   renderMonthlyApplications,
 } from "./js/features/utils.js";
+import { setupAuthHandlers } from "./js/auth/auth.js";
+
 
 onAuthStateChanged(auth, async user => {
   if (!user) {
@@ -81,3 +83,5 @@ async function getJobsByUser(userId) {
 
   return jobSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
+
+setupAuthHandlers();
