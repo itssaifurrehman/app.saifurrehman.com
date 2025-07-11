@@ -75,10 +75,13 @@ authButtons.forEach((btn) => {
 // --- Load page into #mainContent ---
 export async function loadPage(page) {
   try {
+    console.log("Loading page:", page);
     const res = await fetch(page);
     const html = await res.text();
     document.getElementById("mainContent").innerHTML = html;
+    console.log("Page loaded successfully:", page);
     if (page !== "main.html") {
+      console.log("Page is not main.html, initializing app.js");
       const app = await import("./app.js");
          authButtons.forEach((btn) => {
       btn.disabled = false;
@@ -87,6 +90,7 @@ export async function loadPage(page) {
 
       // Wait a bit for DOM to actually paint
       requestAnimationFrame(() => {
+        console.log("Running app.js initDOM for page:", page);
         if (page === "add-medicine.html") {
           app.initDOM(); // Run only when needed
         }
@@ -96,6 +100,7 @@ export async function loadPage(page) {
       });
     }
   } catch (err) {
+    console.error("Failed to load page:", err);
     document.getElementById("mainContent").innerHTML =
       "<p class='text-red-500'>Failed to load page.</p>";
   }
