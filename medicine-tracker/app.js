@@ -21,8 +21,6 @@ export async function getTableData() {
       ui = user.uid;
       loginBtn.classList.add("hidden");
       logoutBtn.classList.remove("hidden");
-       
-
     }
     
   });
@@ -93,6 +91,7 @@ export function initDOM() {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      console.log("User is logged in:", user);
       currentUser = user;
       userNameSpan.textContent = user.displayName;
       loginBtn.classList.add("hidden");

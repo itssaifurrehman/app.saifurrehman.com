@@ -63,6 +63,7 @@ authButtons.forEach((btn) => {
 
   // Check login state
   onAuthStateChanged(auth, (user) => {
+    console.log("Auth state changed:", user);
     if (user) {
       if (userInfo) userInfo.textContent = `Welcome, ${user.displayName}`;
       loadPage("add-medicine.html");
