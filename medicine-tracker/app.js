@@ -91,7 +91,6 @@ export function initDOM() {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log("User is logged in:", user);
       currentUser = user;
       userNameSpan.textContent = user.displayName;
       loginBtn.classList.add("hidden");
