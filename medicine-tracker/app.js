@@ -14,7 +14,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 let ui = null;
-
   
 export async function getTableData() {
   onAuthStateChanged(auth, (user) => {
@@ -22,7 +21,10 @@ export async function getTableData() {
       ui = user.uid;
       loginBtn.classList.add("hidden");
       logoutBtn.classList.remove("hidden");
+       
+
     }
+    
   });
 
   const medicineList = document.getElementById("medicineList");
@@ -241,7 +243,7 @@ if (closeSidebarBtn) {
   function validateDoses() {
     const totalQty = parseInt(frequency.value) || 0; // frequency = total pills bought
     let dailyDose = 0;
-  let  left=0;
+let  left=0;
     scheduleInputs.forEach((input) => {
       dailyDose += parseInt(input.value) || 0;
     });
@@ -439,4 +441,3 @@ if (closeSidebarBtn) {
     }
   });
 }
-
