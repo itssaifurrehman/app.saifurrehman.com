@@ -25,24 +25,35 @@ export function setupAuthHandlers() {
         const userDocSnap = await getDoc(userDocRef);
 
         let role = "user";
-
         if (!userDocSnap.exists()) {
-          // Add new user to Firestore
           await setDoc(userDocRef, {
             email: user.email,
             name: user.displayName,
-            role: "user",
+            role,
             createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString(),
           });
         } else {
           const data = userDocSnap.data();
           role = data.role || "user";
+
+          await setDoc(
+            userDocRef,
+            {
+              lastLogin: new Date().toISOString(),
+            },
+            { merge: true }
+          );
         }
 
         localStorage.setItem("userRole", role);
         localStorage.setItem("userId", user.uid);
 
-        window.location.href = "dashboard.html";
+        if (role === "gbrsuperadmin") {
+          window.location.href = "admin-dashboard.html";
+        } else {
+          window.location.href = "dashboard.html";
+        }
       } catch (error) {
         console.error("❌ Login Error:", error);
         alert("Login failed. Please try again.");
@@ -52,35 +63,43 @@ export function setupAuthHandlers() {
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
-      signOut(auth).then(() => {
-        localStorage.clear();
-        window.location.href = "index.html";
-      });
+      signOut(auth)
+        .then(() => {
+          localStorage.clear();
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          console.error("Logout Error:", error);
+          alert("Logout failed. Try again.");
+        });
     });
   }
 }
 
 export function onUserLoggedIn(callback) {
   onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      try {
-        const userDocRef = doc(db, "users", user.uid);
-        const userDocSnap = await getDoc(userDocRef);
-
-        let role = "user";
-        if (userDocSnap.exists()) {
-          const data = userDocSnap.data();
-          role = data.role || "user";
-        }
-
-        localStorage.setItem("userRole", role);
-        callback(user, role);
-      } catch (err) {
-        console.error("Error fetching user role:", err);
-        callback(user, "user");
-      }
-    } else {
+    if (!user) {
       window.location.href = "index.html";
+      return;
+    }
+
+    try {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      let role = "user";
+      if (userDocSnap.exists()) {
+        const data = userDocSnap.data();
+        role = data.role || "user";
+      }
+
+      localStorage.setItem("userRole", role);
+      localStorage.setItem("userId", user.uid);
+
+      callback(user, role);
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+      callback(user, "user");
     }
   });
 }
