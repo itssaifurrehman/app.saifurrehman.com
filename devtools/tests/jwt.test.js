@@ -37,3 +37,31 @@ test("RS256: generated key pair signs and verifies", async () => {
 test("decodeJwt rejects malformed tokens with a clear error", () => {
   assert.throws(() => decodeJwt("only.two"), /3 dot-separated parts/);
 });
+
+test("ES256 sign and verify round-trip", async () => {
+  const kp = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, true, ["sign", "verify"]);
+  const toPem = async (key, fmt, label) => {
+    const bytes = new Uint8Array(await crypto.subtle.exportKey(fmt, key));
+    let bin = ""; for (const b of bytes) bin += String.fromCharCode(b);
+    return `-----BEGIN ${label}-----\n${btoa(bin).match(/.{1,64}/g).join("\n")}\n-----END ${label}-----`;
+  };
+  const privPem = await toPem(kp.privateKey, "pkcs8", "PRIVATE KEY");
+  const pubPem = await toPem(kp.publicKey, "spki", "PUBLIC KEY");
+  const token = await signJwt({ alg: "ES256", typ: "JWT" }, { sub: "es" }, privPem);
+  assert.equal(await verifyJwt(token, pubPem), true);
+});
+
+test("rejects RS256 public key used as an HS256 secret (algorithm confusion)", async () => {
+  const { publicPem } = await generateRsaKeyPair();
+  // Signing an HS256 token with a PEM as the secret must be refused...
+  await assert.rejects(() => signJwt({ alg: "HS256", typ: "JWT" }, { admin: true }, publicPem), /mismatch/);
+  // ...and verifying any HS256 token against a PEM must be refused, not silently trusted.
+  const legit = await signJwt({ alg: "HS256", typ: "JWT" }, { admin: false }, "realsecret");
+  await assert.rejects(() => verifyJwt(legit, publicPem), /mismatch/);
+});
+
+test("rejects RS256 verification with a raw secret instead of a PEM", async () => {
+  const { privatePem } = await generateRsaKeyPair();
+  const token = await signJwt({ alg: "RS256", typ: "JWT" }, { iss: "me" }, privatePem);
+  await assert.rejects(() => verifyJwt(token, "not-a-pem-secret"), /mismatch/);
+});

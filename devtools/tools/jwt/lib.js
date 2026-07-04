@@ -49,8 +49,16 @@ async function importKeyFor(alg, keyText, usage) {
   if (!SUPPORTED_ALGS.includes(alg)) {
     throw new Error(`Unsupported algorithm: ${alg}. Supported: ${SUPPORTED_ALGS.join(", ")}`);
   }
+  const looksPem = /-----BEGIN [A-Z ]*KEY-----/.test(keyText);
   if (alg.startsWith("HS")) {
+    if (looksPem) {
+      throw new Error(`${alg} expects a raw secret string, but a PEM key was provided (algorithm/key-type mismatch)`);
+    }
     return crypto.subtle.importKey("raw", te.encode(keyText), { name: "HMAC", hash: HASH[alg] }, false, [usage]);
+  }
+  // RS256 / ES256 require a PEM key
+  if (!looksPem) {
+    throw new Error(`${alg} expects a PEM-encoded key, but a raw secret was provided (algorithm/key-type mismatch)`);
   }
   const format = usage === "sign" ? "pkcs8" : "spki";
   const importParams = alg === "RS256"
