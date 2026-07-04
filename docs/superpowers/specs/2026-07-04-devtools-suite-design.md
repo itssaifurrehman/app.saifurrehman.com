@@ -66,7 +66,7 @@ export function destroy() { ... }                // optional extra cleanup
 | Tool | Slug | Implementation |
 |------|------|----------------|
 | JSON Formatter/Validator/Converter | `json-formatter` | Migrate existing jsonValidator features (js-yaml stays, pinned + SRI) |
-| JWT Decoder | `jwt-decoder` | base64url decode + pretty-print; header/payload panes; expiry status |
+| JWT Decoder/Verifier/Signer | `jwt` | jwt.io-style: base64url decode + pretty-print, header/payload panes, expiry status; signature **verify** (HS256/384/512 secret or RS256/ES256 public-key PEM via `crypto.subtle.verify`); **sign** — edit header/payload JSON + secret/private-key PEM → live re-signed token via `crypto.subtle.sign`; example key-pair generator (`crypto.subtle.generateKey`); human-readable claim dates (`iat`/`exp`/`nbf`) |
 | Base64 Encode/Decode | `base64` | `TextEncoder`-safe encode/decode (correct UTF-8 handling) |
 | URL Encode/Decode | `url-codec` | `encodeURIComponent` family |
 | UUID Generator | `uuid` | `crypto.randomUUID()`, bulk count |
@@ -77,7 +77,11 @@ export function destroy() { ... }                // optional extra cleanup
 
 ### Phase 2 — CDN-library and richer-UI tools
 
-Regex tester (live match highlighting), diff checker (`jsdiff`), cron describer (`cronstrue`), JSON↔CSV, color converter + WCAG contrast checker, px↔rem converter, box-shadow/border-radius playground with live CSS output, image→Base64, SVG optimizer, `.env`↔JSON, curl→fetch converter, OG meta-tag generator with preview.
+- **Text & data:** regex tester (live match highlighting), diff checker (`jsdiff`), cron describer (`cronstrue`), JSON↔CSV, `.env`↔JSON, curl→fetch converter, markdown preview (`marked`, sanitized output), word/char/line counter, slug generator.
+- **Frontend/CSS:** color converter + WCAG contrast checker, px↔rem converter, box-shadow/border-radius playground with live CSS output, image→Base64, SVG optimizer, OG meta-tag generator with preview.
+- **Dev converters pack:** JSON→TypeScript interfaces (hand-rolled type inference), number base converter (hex/dec/bin/oct), HTML entity encode/decode, string escape/unescape (JSON string escaper), byte-size converter, SQL formatter (`sql-formatter`).
+- **Generators pack:** password/secret generator (`crypto.getRandomValues`, charset + entropy display), lorem ipsum, QR code generator (`qrcode`), mock data generator (names/emails/JSON arrays).
+- **Backend/network pack:** CIDR/subnet calculator (pure bit math), chmod calculator, HTTP status code + MIME type reference cards (static data).
 
 All phase-2 CDN libraries: version-pinned URLs + SRI `integrity` attributes, loaded lazily by the tool that needs them (not in the shell).
 
@@ -92,6 +96,7 @@ Sidebar click → hash change → router aborts old tool, imports new module, re
 - **Supply chain:** every CDN script pinned to an exact version with an SRI `integrity` + `crossorigin` attribute.
 - **CSP:** `devtools/.htaccess` sets a Content-Security-Policy restricting scripts to `self` + the pinned CDNs, `object-src 'none'`, `base-uri 'self'`. (Tailwind CDN requires `unsafe-inline` styles in phase 1; the precompiled-CSS follow-up removes that.)
 - **Privacy:** zero network calls with user data; everything is computed in-browser.
+- **Secrets handling:** JWT signing secrets and private-key PEMs are NEVER persisted to localStorage (unlike regular tool inputs) — they live only in memory and vanish on tool switch. Key/secret fields use `autocomplete="off"`.
 
 ## Performance
 
