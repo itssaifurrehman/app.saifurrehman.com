@@ -18,6 +18,7 @@ export function on(target, type, handler, signal) {
 }
 
 export function every(ms, fn, signal) {
+  if (signal.aborted) return;
   const id = setInterval(fn, ms);
   signal.addEventListener("abort", () => clearInterval(id), { once: true });
 }

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { setTimeout as sleep } from "node:timers/promises";
-import { debounce } from "../core/dom.js";
+import { debounce, every } from "../core/dom.js";
 import { createStorage } from "../core/storage.js";
 
 function memoryBackend() {
@@ -37,4 +37,25 @@ test("storage returns null and self-heals on corrupt JSON", () => {
   const s = createStorage("demo", backend);
   assert.equal(s.load(), null);
   assert.equal(backend.getItem("devtools:demo"), null);
+});
+
+test("every never starts when the signal is already aborted", async () => {
+  const ctrl = new AbortController();
+  ctrl.abort();
+  let ticks = 0;
+  every(5, () => ticks++, ctrl.signal);
+  await sleep(30);
+  assert.equal(ticks, 0);
+});
+
+test("every stops ticking after abort", async () => {
+  const ctrl = new AbortController();
+  let ticks = 0;
+  every(5, () => ticks++, ctrl.signal);
+  await sleep(30);
+  ctrl.abort();
+  const at = ticks;
+  assert.ok(at > 0);
+  await sleep(30);
+  assert.equal(ticks, at);
 });
