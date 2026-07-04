@@ -71,7 +71,7 @@ export function render(container, ctx) {
   ]);
 
   const clear = el("button", { class: "mt-3 text-xs text-slate-400 hover:text-red-500 underline", text: "Clear input & saved state", type: "button" });
-  on(clear, "click", () => { editor.value = ""; storage.clear(); update(); }, signal);
+  on(clear, "click", () => { editor.value = ""; update(); storage.clear(); }, signal);
 
   function update() {
     const s = stats(editor.value);
