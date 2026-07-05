@@ -1,0 +1,7 @@
+# Content-Security-Policy for the devtools app only.
+# - script-src: self + Tailwind Play CDN + jsdelivr (js-yaml dynamic import)
+# - style-src needs 'unsafe-inline' because the Tailwind Play CDN injects a <style> tag
+<IfModule mod_headers.c>
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'"
+  Header set Referrer-Policy "no-referrer"
+</IfModule>
